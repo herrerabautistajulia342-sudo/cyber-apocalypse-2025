@@ -13,15 +13,19 @@ size='5'>Kewiri</font>
 
 ​	Classification: Official
 
+
+
+
+
+
+
 # Synopsis
 
 - `Kewiri` is a very easy challenge that is in the form of a questionnaire. The first three questions are about finite fields of prime order and the last three about elliptic curves defined over finite fields of prime order.
 
-
-
 ## Description
 
-- TBD
+- The Grand Scholars of Eldoria have prepared a series of trials, each testing the depth of your understanding of the ancient mathematical arts. Those who answer wisely shall be granted insight, while the unworthy shall be cast into the void of ignorance. Will you rise to the challenge, or will your mind falter under the weight of forgotten knowledge?
 
 
 

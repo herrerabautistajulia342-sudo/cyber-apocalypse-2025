@@ -12,15 +12,19 @@
 
 ​	Classification: Official
 
+
+
+
+
+
+
 # Synopsis
 
 - `Traces` is a very easy challenge that teaches players about the AES-CTR key/nonce reuse vulnerability. Due to how the protocol works, there are some known plaintext prefixes, common to each user. Knowing these prefixes and by applying the crib dragging technique, the player is able to slowly recover the entire messages and eventually get the flag.
 
-
-
 ## Description
 
-- TBD
+- Long ago, a sacred message was sealed away, its meaning obscured by the overlapping echoes of its own magic. The careless work of an enchanter has left behind a flaw—a weakness hidden within repetition. With keen eyes and sharper wits, can you untangle the whispers of the past and restore the lost words?
 
 
 

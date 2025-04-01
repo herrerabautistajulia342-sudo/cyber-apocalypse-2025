@@ -1,23 +1,32 @@
 ![img](../../assets/banner.png)
 
-<img src='../../assets/htb.png' style='zoom: 80%;' align=left /><font size='5'>Super Scrambled</font>
+<img src='../../assets/htb.png' style='zoom: 80%;' align=left /><font size='5'>Prelim</font>
 
-6<sup>th</sup> March 2025
+​	6<sup>th</sup> March 2025
 
-Prepared By: `rasti`
+​	Prepared By: `rasti`
 
-Challenge Author(s): `blupper`
+​	Challenge Author(s): `blupper`
 
-Difficulty: <font color='green'>Easy</font>
+​	Difficulty: <font color='green'>Easy</font>
+
+
+
+
+
+
+
 
 
 # Synopsis
 
-This challenge presents the problem of taking the `e`th root in a group, much like the RSA cryptosystem, but instead of the integers modulo $pq$, it's the symmetric group $S_{4919}$. The order of this group can easily be calculated, allowing you to find the inverse of the public exponent.
+- This challenge presents the problem of taking the `e`th root in a group, much like the RSA cryptosystem, but instead of the integers modulo $pq$, it's the symmetric group $S_{4919}$. The order of this group can easily be calculated, allowing you to find the inverse of the public exponent.
 
 ## Description
 
-Cedric has now found yet another secret message, but he dropped it on the floor and it got all scrambled! Do you think you can find a way to undo it?
+- Cedric has now found yet another secret message, but he dropped it on the floor and it got all scrambled! Do you think you can find a way to undo it?
+
+
 
 ## Skills Required
 

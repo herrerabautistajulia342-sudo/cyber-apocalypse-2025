@@ -12,15 +12,19 @@
 
 ​	Classification: Official
 
+
+
+
+
+
+
 # Synopsis
 
 - `Verilicious` is a medium crypto challenge which teaches players about the PKCS#1 v1.5 padding scheme and what information it might leak for the decrypted message. They are provided enough samples to translate the problem into an instance of the HNP and eventually solve for the flag $m$.
 
-
-
 ## Description
 
-- TBD
+- A sacred ward, once thought unbreakable, is built upon a foundation of misplaced trust. The ancient order that devised it never foresaw the cracks in their own defenses. A true cipher-weaver, one with a deep understanding of hidden structures, may find a way to tear it down. Can you?
 
 
 
@@ -98,9 +102,9 @@ Let us go ahead and examine the source script in more detail.
 It looks like the meat of the challenge is inside the Verilicious class and more specifically in the `verify` function. First, an RSA cipher is initialized using the PKCS#1 v1.5 padding scheme.
 
 `verify` receives a ciphertext c, decrypts it with the private key and checks whether the message has valid PKCS#1 v1.5 padding. To produce deterministic results, a fixed seed is used for the `random` module. If the message is not properly padded, `sen` is returned instead which is basically a random byte string. For each value $r_i$ in the list $R$, it holds that:
-$$
-\text{verify}(c * r_i^e\pmod N) = \text{verify}((mr_i)^e \pmod N) = 1
-$$
+
+$$\text{verify}(c * r_i^e\pmod N) = \text{verify}((mr_i)^e \pmod N) = 1$$
+
 which implies that all of the messages $mr_0, mr_1,\ ...,\ mr_{77}$ produce valid padding.
 
 # Solution
@@ -110,9 +114,9 @@ which implies that all of the messages $mr_0, mr_1,\ ...,\ mr_{77}$ produce vali
 This is one of these challenges that can be solved by finding the right paper or figuring out the attack manually, which would certainly take much more time. In fact, the attack for this challenge is showcased at page 32 of [this](https://eprint.iacr.org/2023/032.pdf) amazing paper (and resource).
 
 The key point for understanding the attack is that valid PKCS#1 v1.5 padded messages, start with the bytes `\x00\x02`. As mentioned, let $B = 2^{l - 16}$, where $l$ is the bit length of $n$. It holds that:
-$$
-2B \leq r_im \pmod N < 3B
-$$
+
+$$2B \leq r_im \pmod N < 3B$$
+
 One can verify this with local experiments for example with a 1024-bit modulus $N$:
 
 ```python
@@ -129,9 +133,9 @@ One can verify this with local experiments for example with a 1024-bit modulus $
 ```
 
 Since a message with valid padding always starts with `0002`, it should lie between $2B$ and $3B$. With some rearrangement, we get that:
-$$
-k_i - r_im + 2B = 0 \pmod N
-$$
+
+$$k_i - r_im + 2B = 0 \pmod N$$
+
 where:
 
 - $k_i$ are unknowns $< B$
@@ -139,8 +143,8 @@ where:
 - $λ = 78$, the cardinality of $R$.
 
 This is precisely an instance of the Hidden Number Problem (HNP). Our target is to recover $m$​, the hidden number. We reference chapter 4.3 of the same paper for understanding the lattice setup for this kind of problems. Let the following matrix:
-$$
-M =
+
+$$M =
 \begin{bmatrix}
 N & 0 & 0 & \dots & 0 & 0 & 0\\
 0 & N & 0 & \dots & 0 & 0 & 0\\
@@ -159,14 +163,13 @@ k_1\\
 k_{λ-1}\\
 m\\
 -1
-\end{pmatrix}
-$$
+\end{pmatrix}$$
+
 The rows of the matrix $M$ describe the bases of the lattice that we want to reduce with LLL.
 
 This lattice (in other words, this set of bases) contains the vector $B$ too:
-$$
-B = \begin{pmatrix}k_0, k_1, \dots, k_{λ-1}, m\dfrac{B}{N}, -B\end{pmatrix}
-$$
+
+$$B = \begin{pmatrix}k_0, k_1, \dots, k_{λ-1}, m\dfrac{B}{N}, -B\end{pmatrix}$$
 
 # Exploitation
 
@@ -206,9 +209,9 @@ for row in L:
 ```
 
 We iterate over the rows of $L$ and we use the last element to check whether the reduced row is correct. The target value is $-B$ so we take the absolute value and compare it against $B$. If such row is found, then we know that the next to last element contains the message $m$ and can be solved by:
-$$
-m = \dfrac{\text{row[-2]}*\bar{N}}{B}
-$$
+
+$$m = \dfrac{\text{row[-2]}*\bar{N}}{B}$$
+
 When we run this code, `[+] found!` is not printed.
 
 We can experiment locally to see why this is happening and we might notice that the number of $r_i$ is not enough to recover $m$. However, we notice that apart from these values, there is also the trivial $r = 1$ value which is not included in the list $R$. Let us manually append it and try again.

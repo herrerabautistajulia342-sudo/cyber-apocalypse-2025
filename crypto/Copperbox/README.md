@@ -2,24 +2,33 @@
 
 <img src='../../assets/htb.png' style='zoom: 80%;' align=left /><font size='5'>Copperbox</font>
 
-6<sup>th</sup> March 2025
+​	6<sup>th</sup> March 2025
 
-Prepared By: `rasti`
+​	Prepared By: `rasti`
 
-Challenge Author(s): `blupper`
+​	Challenge Author(s): `blupper`
 
-Difficulty: <font color='orange'>Medium</font>
+​	Difficulty: <font color='orange'>Medium</font>
+
+
+
+
+
+
+
 
 
 # Synopsis
 
-This challenge asks players to recover the state of an LCG (linear congruential generator) given two pairs of quotients of two outputs each, but with the lower bits of each output truncated away.
-This is done by constructing a polynomial equation with small solutions and then solving it using Coppersmith's method.
+- This challenge asks players to recover the state of an LCG (linear congruential generator) given two pairs of quotients of two outputs each, but with the lower bits of each output truncated away.
+  This is done by constructing a polynomial equation with small solutions and then solving it using Coppersmith's method.
 
 
 ## Description
 
-Cedric found a mysterious box made of pure copper in the old archive. He is convinced that it contains the secrets he is looking for, but he is unable to penetrate the metal case. Can you help?
+- Cedric found a mysterious box made of pure copper in the old archive. He is convinced that it contains the secrets he is looking for, but he is unable to penetrate the metal case. Can you help?
+
+
 
 ## Skills Required
 
@@ -50,7 +59,10 @@ Truncated LCG outputs is a relatively common  occurance in CTFs, and solving the
 Let $s_1, s_2, s_3, s_4$ be the LCG outputs as before. Then we have the equations
 
 $$
-h_1 \equiv s_1 s_2^{-1} \pmod{p} \implies s_1 - h_1 s_2 \equiv 0 \pmod{p} \\
+h_1 \equiv s_1 s_2^{-1} \pmod{p} \implies s_1 - h_1 s_2 \equiv 0 \pmod{p}
+$$
+
+$$
 h_2 \equiv s_3 s_4^{-1} \pmod{p} \implies s_3 - h_2 s_4 \equiv 0 \pmod{p}
 $$
 
@@ -59,7 +71,10 @@ Since the given seed is $x$ we can write $s_i = a^{i} x + b \frac{a^{i}-1}{a-1}$
 We are only given an approximation $\widetilde{h}_i$ of $h_i, i \in \{1, 2\}$ such that $h_i = \widetilde{h}_i + e_i$ where $e_i$ is the bits which were truncated, so $0 \le e_i \lt 2^{48}$. With this information we can construct the following equations, from the ones above, where only $x, e_1$ and $e_2$ are unknown:
 
 $$
-c_1 x + d_1 - (\widetilde{h}_1 + e_1) (c_2 x + d_2) \equiv 0 \pmod{p} \\
+c_1 x + d_1 - (\widetilde{h}_1 + e_1) (c_2 x + d_2) \equiv 0 \pmod{p}
+$$
+
+$$
 c_3 x + d_3 - (\widetilde{h}_2 + e_2) (c_4 x + d_4) \equiv 0 \pmod{p}
 $$
 
